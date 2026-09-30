@@ -9,7 +9,7 @@
 import { withBase } from '../config/site';
 const src = withBase('/fairy/fada.png');
 ---
-<div class="fairy-layer" aria-hidden="true">
+<div class="fairy-layer" aria-hidden="true" data-fairy-layer>
   <div class="fairy" data-fairy>
     <div class="fairy__flip" data-fairy-flip>
       <div class="fairy__bob">
@@ -23,6 +23,9 @@ const src = withBase('/fairy/fada.png');
 
 <style>
   .fairy-layer { position: fixed; inset: 0; z-index: 80; pointer-events: none; overflow: hidden; }
+  /* Telemóvel: a camada tem a altura da página e anda com o scroll nativo, para a fada pousada
+     acompanhar o conteúdo sem o atraso que o iOS dá a elementos fixos movidos por JavaScript. */
+  .fairy-layer.is-page { position: absolute; inset: 0 0 auto; height: var(--page-h, 100%); }
   .fairy { position: absolute; left: 0; top: 0; width: var(--fairy-w, 64px); will-change: transform; opacity: 0; transition: opacity 0.6s; }
   .fairy.is-ready { opacity: 1; }
   .fairy.is-ready.is-away { opacity: 0; transition-duration: 0.3s; }
@@ -52,12 +55,13 @@ const src = withBase('/fairy/fada.png');
 </style>
 
 <script>
+  const layer = document.querySelector<HTMLElement>('[data-fairy-layer]');
   const fairy = document.querySelector<HTMLElement>('[data-fairy]');
   const flip = document.querySelector<HTMLElement>('[data-fairy-flip]');
   const dust = document.querySelector<HTMLElement>('[data-fairy-dust]');
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  if (fairy && flip && dust && !reduce) {
+  if (layer && fairy && flip && dust && !reduce) {
     const colors = ['#dab84f', '#da4f8c', '#0d8de5', '#f2d98a'];
     const star = '<svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 0c.9 6.6 3.4 9.3 12 12-8.6 2.7-11.1 5.4-12 12-.9-6.6-3.4-9.3-12-12 8.6-2.7 11.1-5.4 12-12Z"/></svg>';
     // Telemóvel (ecrã estreito ou tátil): a fada pousa em espaços livres em vez de atravessar o conteúdo.
@@ -77,9 +81,11 @@ const src = withBase('/fairy/fada.png');
       return [tx, ty];
     };
 
-    /* Telemóvel: tudo em coordenadas da página (y inclui o scroll). Pousada, a fada acompanha o
-       conteúdo e fica no mesmo espaço vazio. Quando esse espaço sai do ecrã ou passa a ter texto
-       por cima, voa para o espaço livre mais próximo; de vez em quando salta para outro ali perto. */
+    /* Telemóvel: tudo em coordenadas da página (y inclui o scroll), numa camada que anda com a página.
+       Pousada, a fada acompanha o conteúdo e fica no mesmo espaço vazio. Enquanto a página desliza
+       depressa deixa-se levar, mesmo para fora do ecrã; quando abranda, se o espaço saiu de vista (ou
+       passou a ter texto por cima), voa para outro ou, se não estiver à vista, reaparece por magia
+       onde o espaço dure mais no ecrã. De vez em quando salta para outro sítio ali perto. */
     type Box = [number, number, number, number];
     const SKIP = '.fairy-layer, script, style, noscript, template, .site-header, .mobile-menu, .marquee, .hero__sticker';
     const AVOID = '.marquee, .hero__sticker'; // blocos evitados por inteiro (em movimento ou com fundo próprio)
@@ -91,7 +97,9 @@ const src = withBase('/fairy/fada.png');
     let rects: Box[] = [], fixed: Box[] = [];
     let goal: [number, number] | null = null;
     let top = 0, hw = 0, hh = 0, dir = 0, lastSy = 0, scanSy = 0;
-    let nextScan = 0, nextTry = 0, restUntil = 0, away = false;
+    let nextScan = 0, nextTry = 0, restUntil = 0, lastFast = 0, away = false;
+    const sizeLayer = () => layer.style.setProperty('--page-h', `${Math.max(document.body.offsetHeight, document.documentElement.clientHeight)}px`);
+    new ResizeObserver(sizeLayer).observe(document.body);
 
     // O que conta como texto: cada linha de texto e, em botões e links pequenos, a caixa inteira.
     const collect = () => {
@@ -127,22 +135,29 @@ const src = withBase('/fairy/fada.png');
       scanSy = sy;
     };
 
-    // A fada, centrada em (cx, cy), cabe aqui sem tapar texto e sem sair do ecrã?
-    const free = (cx: number, cy: number, s = 1) => {
+    // A fada, centrada em (cx, cy), fica sem tapar texto? (o texto anda com a página)
+    const clear = (cx: number, cy: number, s = 1) => {
+      const l = cx - hw * s, r = cx + hw * s, tp = cy - hh * s, b = cy + hh * s;
+      for (const q of rects) if (q[0] < r && q[2] > l && q[1] < b && q[3] > tp) return false;
+      return true;
+    };
+    // E está à vista: dentro do ecrã, abaixo do cabeçalho e fora dos botões fixos?
+    const inView = (cx: number, cy: number, s = 1) => {
       const l = cx - hw * s, r = cx + hw * s, tp = cy - hh * s, b = cy + hh * s, sy = scrollY;
       if (l < 4 || r > innerWidth - 4 || tp < sy + top + 6 || b > sy + innerHeight - 10) return false;
-      for (const q of rects) if (q[0] < r && q[2] > l && q[1] < b && q[3] > tp) return false;
       for (const q of fixed) if (q[0] < r && q[2] > l && q[1] + sy < b && q[3] + sy > tp) return false;
       return true;
     };
+    const free = (cx: number, cy: number, s = 1) => inView(cx, cy, s) && clear(cx, cy, s);
     const pathFree = (cx: number, cy: number) => {
       const n = Math.max(2, Math.ceil(Math.hypot(cx - x, cy - y) / 24));
-      for (let i = 1; i < n; i++) if (!free(x + (cx - x) * i / n, y + (cy - y) * i / n, 0.9)) return false;
+      for (let i = 1; i < n; i++) if (!clear(x + (cx - x) * i / n, y + (cy - y) * i / n, 0.9)) return false;
       return true;
     };
 
-    // hop: salto voluntário para outro sítio ali perto; senão, o espaço livre mais próximo.
-    const pick = (hop: boolean): [number, number] | null => {
+    // hop: salto voluntário para outro sítio ali perto. Senão, o melhor espaço livre: com a fada à
+    // vista, o mais próximo; fora de vista, onde o espaço fique mais tempo no ecrã.
+    const pick = (hop: boolean, seen: boolean): [number, number] | null => {
       const sy = scrollY, vh = innerHeight, step = 14, want = 90 + Math.random() * 170;
       // Do lado para onde o conteúdo vai, o espaço fica mais tempo no ecrã.
       const pref = dir > 0 ? 0.68 : dir < 0 ? 0.38 : 0.52;
@@ -152,9 +167,9 @@ const src = withBase('/fairy/fada.png');
           if (!free(cx, cy)) continue;
           const d = Math.hypot(cx - x, cy - y);
           if (hop && d < 60) continue;
-          let score = (hop ? Math.abs(d - want) : d) + Math.abs((cy - sy) / vh - pref) * 260 + Math.random() * 40;
+          let score = (hop ? Math.abs(d - want) : seen ? d : 0) + Math.abs((cy - sy) / vh - pref) * 260 + Math.random() * 40;
           // Só salta por caminhos livres; de resto, prefere-os (sem caminho livre, teletransporta-se).
-          if (score < bestScore && !pathFree(cx, cy)) { if (hop) continue; score += 250; }
+          if (seen && score < bestScore && !pathFree(cx, cy)) { if (hop) continue; score += 250; }
           if (score < bestScore) { bestScore = score; best = [cx, cy]; }
         }
       }
@@ -172,33 +187,45 @@ const src = withBase('/fairy/fada.png');
     };
 
     const phoneStep = (f: number, now: number) => {
-      const sy = scrollY;
-      if (sy > lastSy + 0.5) dir = 1; else if (sy < lastSy - 0.5) dir = -1;
+      const sy = scrollY, ds = sy - lastSy;
+      if (ds > 0.5) dir = 1; else if (ds < -0.5) dir = -1;
+      if (Math.abs(ds) / f > 3) lastFast = now;
       lastSy = sy;
+      // A página a deslizar depressa (um "flick"): nada de mudar de sítio até abrandar.
+      const moving = now - lastFast < 180;
       if (now > nextScan || Math.abs(sy - scanSy) > innerHeight * 0.5) { scan(); nextScan = now + 400; }
       top = header ? Math.max(0, header.getBoundingClientRect().bottom) : 0;
       const w = fairy.offsetWidth;
       hw = w / 2 + 4; hh = (w * 404 / 331) / 2 + 10; // +10: o balançar vertical
 
-      if (!goal || !free(goal[0], goal[1])) {
-        if (now >= nextTry) {
-          const s = pick(false);
+      // Perde o poleiro se o texto lhe passar por cima (a deslizar, some até a página parar);
+      // se só saiu de vista, espera que a página abrande. 0.85: pequenas sobreposições não contam.
+      if (goal && (!clear(goal[0], goal[1], 0.85) || (!moving && !inView(goal[0], goal[1], 0.85)))) {
+        goal = null; restUntil = 0;
+        if (moving) setAway(true);
+      }
+
+      if (!goal) {
+        if (!moving && now >= nextTry) {
+          const seen = !away && inView(x, y, 0.5);
+          const s = pick(false, seen);
           if (s) {
-            // Escondida, ou sem caminho livre até lá: desfaz-se em brilhos e reaparece lá.
-            if (away || !goal || !pathFree(s[0], s[1])) {
-              if (!away && goal) burst(x, y - sy, w);
+            // Fora de vista, ou sem caminho livre até lá: desfaz-se em brilhos e reaparece lá.
+            if (!seen || !pathFree(s[0], s[1])) {
+              if (seen) burst(x, y, w);
               x = px = s[0]; y = py = s[1];
-              burst(x, y - sy, w);
+              burst(x, y, w);
               pop();
+              nextTry = now + 700;
             }
-            goal = s; restUntil = 0; setAway(false);
+            goal = s; setAway(false);
           } else {
             // Nenhum espaço livre à vista: some até haver um.
-            goal = null; setAway(true); nextTry = now + 250;
+            setAway(true); nextTry = now + 400;
           }
         }
-      } else if (restUntil && now > restUntil) {
-        const s = pick(true);
+      } else if (restUntil && now > restUntil && !moving) {
+        const s = pick(true, true);
         if (s) { goal = s; restUntil = 0; } else restUntil = now + 2000;
       }
 
@@ -233,8 +260,9 @@ const src = withBase('/fairy/fada.png');
       const f = Math.min(4, Math.max(0.25, (now - last) / (1000 / 60)));
       last = now;
       if (phoneMq.matches !== phone) {
-        // Mudança de modo: converte entre coordenadas do ecrã e da página.
+        // Mudança de modo: a camada passa a andar com a página (ou volta a ser fixa); converte as coordenadas.
         phone = phoneMq.matches;
+        layer.classList.toggle('is-page', phone);
         const d = phone ? scrollY : -scrollY;
         y += d; py += d; goal = null; restUntil = 0; nextTry = 0; setAway(false);
       }
@@ -244,15 +272,15 @@ const src = withBase('/fairy/fada.png');
         x += (tx - x) * 0.06;
         y += (ty - y) * 0.06;
       }
-      const oy = phone ? scrollY : 0, fs = phone ? f : 1;
+      const fs = phone ? f : 1;
       const vx = (x - px) / fs, vy = (y - py) / fs, speed = Math.hypot(vx, vy);
       if (vx > 0.4 && !facingRight) { facingRight = true; flip.classList.add('is-right'); }
       else if (vx < -0.4 && facingRight) { facingRight = false; flip.classList.remove('is-right'); }
       const w = fairy.offsetWidth, h = w * (404 / 331);
       const tilt = Math.max(-18, Math.min(18, vx * 1.6));
-      fairy.style.transform = `translate3d(${x - w / 2}px, ${y - oy - h / 2}px, 0) rotate(${tilt}deg)`;
+      fairy.style.transform = `translate3d(${x - w / 2}px, ${y - h / 2}px, 0) rotate(${tilt}deg)`;
       // Os brilhos saem dos pés (o lado de trás, oposto ao da cabeça).
-      const tailX = x + (facingRight ? -1 : 1) * w * 0.4, tailY = y - oy + h * 0.35;
+      const tailX = x + (facingRight ? -1 : 1) * w * 0.4, tailY = y + h * 0.35;
       if (!away) {
         if (speed > 1.2 && t % 2 === 0) sparkle(tailX, tailY);
         else if (t % (phone ? 40 : 24) === 0) sparkle(tailX, tailY);
@@ -265,7 +293,7 @@ const src = withBase('/fairy/fada.png');
     });
     // No telemóvel a barra do browser dispara resize a cada scroll; só a largura muda o texto.
     let lastW = innerWidth;
-    addEventListener('resize', () => { if (innerWidth !== lastW) { lastW = innerWidth; targets = null; } nextScan = 0; });
+    addEventListener('resize', () => { if (innerWidth !== lastW) { lastW = innerWidth; targets = null; } nextScan = 0; sizeLayer(); });
     fairy.classList.add('is-ready');
     raf = requestAnimationFrame(frame);
   }
