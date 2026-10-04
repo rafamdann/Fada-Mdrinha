@@ -1,5 +1,5 @@
 ---
-/** Fecho de todas as páginas: o gradiente rosa→azul do manual, com brilhos. */
+/** Fecho de todas as páginas (e rodapé do site): o gradiente rosa→azul do manual, com brilhos. */
 import Icon from './Icon.astro';
 import Star from './Star.astro';
 import { site, waLink, whatsappMessages, telLink, mailLink } from '../config/site';
@@ -10,13 +10,13 @@ const {
   message = whatsappMessages.geral,
 } = Astro.props;
 ---
-<section id="contacto" class="cta" aria-labelledby="cta-title">
+<footer id="contacto" class="cta">
   <Star style="top:14%;left:8%;--s:26px;--t:.1s" color="var(--gold)" />
   <Star style="top:70%;left:14%;--s:16px;--t:.9s" color="#fff" />
   <Star style="top:22%;right:10%;--s:20px;--t:1.4s" color="#fff" />
   <Star style="bottom:16%;right:18%;--s:30px;--t:.5s" color="var(--gold)" />
   <div class="wrap cta__inner">
-    <h2 id="cta-title" class="reveal">{title}</h2>
+    <h2 class="reveal">{title}</h2>
     <p class="cta__text reveal" style="--d:1">{text}</p>
     <div class="actions actions--center reveal" style="--d:2">
       <a href={waLink(message)} class="btn btn--white btn--lg" target="_blank" rel="noopener"><Icon name="whatsapp" /> Pedir orçamento</a>
@@ -30,10 +30,14 @@ const {
       <li><Icon name="pin" size={20} /><span>{site.address.display}</span></li>
     </ul>
   </div>
-</section>
+  <div class="wrap cta__bottom">
+    <p>© {site.copyrightYear} Fada Madrinha. Todos os direitos reservados.</p>
+    <a href="https://innoweb.agency" target="_blank" rel="noopener">Made by Innoweb Solutions Agency</a>
+  </div>
+</footer>
 
 <style>
-  .cta { position: relative; overflow: hidden; background: var(--grad-brand); color: var(--white); padding-block: clamp(80px, 10vw, 140px); text-align: center; }
+  .cta { position: relative; overflow: hidden; background: var(--grad-brand); color: var(--white); padding-block: clamp(80px, 10vw, 140px) 12px; text-align: center; }
   .cta__inner { position: relative; }
   .cta h2 { color: var(--white); font-size: clamp(2.4rem, 1.4rem + 4vw, 4.4rem); max-width: 14ch; margin-inline: auto; }
   .cta__text { font-size: clamp(1.1rem, 1rem + 0.5vw, 1.35rem); color: rgba(255, 255, 255, 0.92); max-width: 44ch; margin: 0 auto 32px; }
@@ -42,5 +46,12 @@ const {
   .cta__details li { display: flex; align-items: center; gap: 8px; min-height: 44px; }
   .cta__details a { color: var(--white); }
   .cta__details a:hover { color: var(--gold); }
+  .cta__bottom { position: relative; display: flex; flex-wrap: wrap; align-items: center; justify-content: center; column-gap: 24px; margin-top: clamp(56px, 7vw, 88px); padding-top: 12px; border-top: 1px solid rgba(255, 255, 255, 0.22); font-size: 0.88rem; }
+  .cta__bottom p { margin: 0; color: rgba(255, 255, 255, 0.75); }
+  .cta__bottom a { display: inline-flex; align-items: center; min-height: 44px; color: rgba(255, 255, 255, 0.9); text-decoration-color: rgba(255, 255, 255, 0.4); }
+  .cta__bottom a:hover { color: var(--gold); text-decoration-color: currentColor; }
   .cta :focus-visible { outline-color: var(--white); }
+  /* Espaço para o botão flutuante do WhatsApp não tapar a última linha. */
+  @media (max-width: 759px) { .cta { padding-bottom: 88px; } }
+  @media (min-width: 760px) { .cta__bottom { justify-content: space-between; } }
 </style>

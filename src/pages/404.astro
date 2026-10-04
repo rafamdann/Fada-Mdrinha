@@ -2,6 +2,7 @@
 import Base from '../layouts/Base.astro';
 import Icon from '../components/Icon.astro';
 import Star from '../components/Star.astro';
+import ContactCta from '../components/ContactCta.astro';
 import { waLink, withBase } from '../config/site';
 ---
 <Base title="Página não encontrada" description="A página que procura não existe ou foi movida." noindex>
@@ -19,6 +20,7 @@ import { waLink, withBase } from '../config/site';
       </div>
     </div>
   </section>
+  <ContactCta slot="footer" />
 </Base>
 
 <style>
