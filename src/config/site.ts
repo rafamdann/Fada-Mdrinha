@@ -5,7 +5,7 @@
 
 /**
  * Caminho interno com o prefixo do site (base em astro.config.mjs): withBase('/servicos') dá
- * '/fada-madrinha2/servicos'. Usar em todos os links e ficheiros de public/.
+ * '/fada-madrinha3/servicos'. Usar em todos os links e ficheiros de public/.
  */
 export function withBase(path: string = '/'): string {
   const base = import.meta.env.BASE_URL.replace(/\/$/, '');
@@ -15,7 +15,7 @@ export function withBase(path: string = '/'): string {
 export const site = {
   name: 'Fada Madrinha',
   // Endereço completo do início do site. (fadamadrinha.com é de outra empresa, não usar.)
-  url: 'https://innoweb.agency/fada-madrinha2',
+  url: 'https://innoweb.agency/fada-madrinha3',
   tagline: 'Transformamos espaços. Criamos bem-estar.',
   description:
     'Limpeza profissional residencial e empresarial em Talatona, Luanda. Método próprio, supervisão em cada visita e atendimento próximo. Peça o seu orçamento pelo WhatsApp.',

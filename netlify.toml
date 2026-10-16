@@ -8,22 +8,22 @@
 
 # Ficheiros com hash (CSS, JS, imagens optimizadas): cache para sempre.
 [[headers]]
-  for = "/fada-madrinha2/_astro/*"
+  for = "/fada-madrinha3/_astro/*"
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
 
 [[headers]]
-  for = "/fada-madrinha2/fonts/*"
+  for = "/fada-madrinha3/fonts/*"
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
 
 [[headers]]
-  for = "/fada-madrinha2/logo/*"
+  for = "/fada-madrinha3/logo/*"
   [headers.values]
     Cache-Control = "public, max-age=604800"
 
 [[headers]]
-  for = "/fada-madrinha2/fairy/*"
+  for = "/fada-madrinha3/fairy/*"
   [headers.values]
     Cache-Control = "public, max-age=604800"
 
@@ -40,13 +40,13 @@
 # URLs antigos do protótipo
 [[redirects]]
   from = "/index.html"
-  to = "/fada-madrinha2"
+  to = "/fada-madrinha3"
   status = 301
 [[redirects]]
   from = "/quem-somos.html"
-  to = "/fada-madrinha2/quem-somos"
+  to = "/fada-madrinha3/quem-somos"
   status = 301
 [[redirects]]
   from = "/servicos.html"
-  to = "/fada-madrinha2/servicos"
+  to = "/fada-madrinha3/servicos"
   status = 301

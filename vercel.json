@@ -1,12 +1,12 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "redirects": [
-    { "source": "/", "destination": "/fada-madrinha2", "permanent": false },
-    { "source": "/:path((?!fada-madrinha2).*)", "destination": "/fada-madrinha2/:path", "permanent": false }
+    { "source": "/", "destination": "/fada-madrinha3", "permanent": false },
+    { "source": "/:path((?!fada-madrinha3).*)", "destination": "/fada-madrinha3/:path", "permanent": false }
   ],
   "headers": [
     {
-      "source": "/fada-madrinha2/_astro/(.*)",
+      "source": "/fada-madrinha3/_astro/(.*)",
       "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }]
     }
   ]
