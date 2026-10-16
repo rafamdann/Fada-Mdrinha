@@ -1,13 +1,17 @@
 ---
 import { Picture } from 'astro:assets';
 import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
 import Star from '../components/Star.astro';
+import Wave from '../components/Wave.astro';
+import Marquee from '../components/Marquee.astro';
 import Faq from '../components/Faq.astro';
 import ContactCta from '../components/ContactCta.astro';
-import { site, withBase } from '../config/site';
-import { faq } from '../data/content';
+import { site, waLink, whatsappMessages, withBase } from '../config/site';
+import { services, howItWorks, compare, included, phases, segments, faq } from '../data/content';
 import cozinha from '../assets/photos/cozinha.jpg';
 import engomar from '../assets/photos/engomar.jpg';
+import janela from '../assets/photos/janela.jpg';
 
 const headline = ['Transformamos', 'espaços.', 'Criamos', 'bem-estar.'];
 ---
@@ -25,7 +29,7 @@ const headline = ['Transformamos', 'espaços.', 'Criamos', 'bem-estar.'];
         </h1>
         <p class="lede hero__lede">Limpeza profissional para casas e empresas em Luanda. Com método, cuidado e a discrição de quem trata o seu espaço como se fosse o nosso.</p>
         <div class="actions hero__actions">
-          <a href={withBase('/servicos#como-funciona')} class="btn btn--outline btn--lg">Como funciona</a>
+          <a href="#como-funciona" class="btn btn--outline btn--lg">Como funciona</a>
         </div>
         <p class="reassure hero__reassure">{site.replyPromise}</p>
       </div>
@@ -40,6 +44,143 @@ const headline = ['Transformamos', 'espaços.', 'Criamos', 'bem-estar.'];
         <span class="hero__circle hero__circle--a float" aria-hidden="true"></span>
         <span class="hero__circle hero__circle--b float" style="--t:-3s" aria-hidden="true"></span>
         <p class="hero__sticker" aria-hidden="true">Cada detalhe<br />faz a diferença</p>
+      </div>
+    </div>
+  </section>
+
+  <Marquee items={services.map((s) => s.title)} tone="azul" />
+
+  <!-- COMO FUNCIONA -->
+  <section id="como-funciona" class="section" aria-labelledby="como-title">
+    <div class="wrap">
+      <div class="head head--center">
+        <h2 id="como-title" class="reveal">Pedir uma limpeza é <span class="swash reveal">simples</span></h2>
+        <p class="reveal" style="--d:1">Do primeiro olá ao brilho final, em quatro passos.</p>
+      </div>
+      <ol class="how">
+        {howItWorks.map((s, i) => (
+          <li class={`how__step how__step--${i} reveal`} style={`--d:${i}`}>
+            <span class="num-dot how__num">{i + 1}</span>
+            <h3>{s.title}</h3>
+            <p>{s.text}</p>
+          </li>
+        ))}
+      </ol>
+      <div class="actions actions--center how__cta reveal">
+        <a href={waLink()} class="btn btn--pink btn--lg" target="_blank" rel="noopener"><Icon name="whatsapp" /> Começar agora</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- COMPARAÇÃO -->
+  <Wave color="var(--tint-pink)" />
+  <section class="section bg-pink compare" aria-labelledby="compare-title">
+    <div class="wrap">
+      <div class="head head--center">
+        <h2 id="compare-title" class="reveal">Cansado da limpeza de sempre?</h2>
+        <p class="reveal" style="--d:1">Muitas famílias e empresas em Angola conhecem bem estes problemas. Nós nascemos para os resolver.</p>
+      </div>
+      <div class="compare__grid">
+        <div class="compare__col compare__col--old reveal">
+          <h3>A limpeza de sempre</h3>
+          <ul>
+            {compare.others.map((o, i) => <li class="reveal strike" style={`--d:${i + 1}`}><Icon name="x" size={22} stroke={2.6} /><span><span class="strike__t">{o}</span></span></li>)}
+          </ul>
+        </div>
+        <div class="compare__col compare__col--new reveal" style="--d:2">
+          <img src={withBase('/logo/mark.png')} width="72" height="72" alt="" class="compare__mark" />
+          <h3>Com a Fada Madrinha</h3>
+          <ul>
+            {compare.us.map((o, i) => <li class="reveal" style={`--d:${i + 2}`}><Icon name="check" size={22} stroke={2.6} /><span>{o}</span></li>)}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+  <Wave color="var(--cream)" bg="var(--tint-pink)" flip />
+
+  <!-- SERVIÇOS -->
+  <section id="servicos" class="section" aria-labelledby="svc-title">
+    <div class="wrap">
+      <div class="head">
+        <h2 id="svc-title" class="reveal">Um toque de magia em cada cantinho</h2>
+        <p class="reveal" style="--d:1">Seis serviços para casas, empresas e obras. O mesmo cuidado em todos.</p>
+      </div>
+      <ul class="tiles">
+        {services.map((s, i) => (
+          <li class={`tile tile--${s.tone} reveal`} style={`--d:${i % 3}`}>
+            <a href={withBase(`/servicos#${s.id}`)}>
+              <span class="tile__icon"><Icon name={s.icon} size={30} /></span>
+              <h3>{s.title}</h3>
+              <p>{s.short}</p>
+              <span class="tile__more">Saber mais <Icon name="arrow" size={18} /></span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- MÉTODO -->
+  <section class="section bg-azul method" aria-labelledby="met-title">
+    <Star style="top:10%;right:8%;--s:34px;--t:.4s" color="var(--white)" />
+    <Star style="bottom:12%;left:6%;--s:22px;--t:1.3s" color="var(--gold)" />
+    <div class="wrap">
+      <div class="head">
+        <h2 id="met-title" class="reveal">A magia tem método</h2>
+        <p class="reveal method__lede" style="--d:1">Cada serviço segue as mesmas cinco fases. Independentemente de quem o executa, do cliente ou do horário.</p>
+      </div>
+      <ol class="phases">
+        {phases.map((p, i) => (
+          <li class="phase reveal" style={`--d:${i}`}>
+            <span class="num-dot phase__num">{i + 1}</span>
+            <h3>{p.title}</h3>
+            <p>{p.text}</p>
+          </li>
+        ))}
+      </ol>
+      <blockquote class="gold-q reveal">
+        <p>“Se este espaço fosse meu, eu daria este serviço por terminado?”</p>
+        <footer>A pergunta que cada Fada faz antes de sair. Se a resposta for não, o trabalho continua.</footer>
+      </blockquote>
+      <div class="actions reveal"><a href={withBase('/metodo')} class="btn btn--white">Conhecer o nosso método</a></div>
+    </div>
+  </section>
+
+  <!-- SEMPRE INCLUÍDO -->
+  <section class="section" aria-labelledby="inc-title">
+    <div class="wrap">
+      <div class="head head--center">
+        <h2 id="inc-title" class="reveal">Sempre incluído, sem pedir</h2>
+        <p class="reveal" style="--d:1">O que recebe em cada visita, seja uma casa ou uma empresa.</p>
+      </div>
+      <ul class="perks">
+        {included.map((p, i) => (
+          <li class={`perk perk--${p.tone} reveal`} style={`--d:${i % 3}`}>
+            <span class="perk__icon"><Icon name={p.icon} size={28} /></span>
+            <h3>{p.title}</h3>
+            <p>{p.text}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- EMPRESAS -->
+  <section class="section bg-deep biz" aria-labelledby="biz-title">
+    <div class="wrap biz__grid">
+      <div class="biz__art reveal">
+        <div class="biz__drop"><Picture src={janela} formats={['avif', 'webp']} widths={[320, 480, 720]} sizes="(min-width: 900px) 380px, 80vw" alt="Mão com luva amarela a limpar a janela de um escritório ao fim da tarde" /></div>
+        <span class="biz__circle float" aria-hidden="true"></span>
+      </div>
+      <div>
+        <h2 id="biz-title" class="reveal">Um espaço limpo transmite confiança à sua empresa</h2>
+        <p class="lede reveal biz__lede" style="--d:1">Planos recorrentes com supervisão em cada visita, equipa identificada e confidencialidade absoluta.</p>
+        <ul class="biz__segs reveal" style="--d:2">{segments.map((s) => <li>{s}</li>)}</ul>
+        <div class="actions reveal" style="--d:3">
+          <a href={waLink(whatsappMessages.empresas)} class="btn btn--white btn--lg" target="_blank" rel="noopener"><Icon name="whatsapp" /> Pedir orçamento</a>
+          <a href={withBase('/empresas')} class="btn btn--outline-light btn--lg">Soluções para empresas</a>
+        </div>
       </div>
     </div>
   </section>
@@ -93,4 +234,99 @@ const headline = ['Transformamos', 'espaços.', 'Criamos', 'bem-estar.'];
   @keyframes pop { from { opacity: 0; transform: scale(0.6) rotate(-8deg); } to { opacity: 1; transform: none; } }
   @keyframes sticker { from { opacity: 0; transform: scale(0.4) rotate(-20deg); } to { opacity: 1; transform: rotate(-6deg); } }
 
+  /* COMO FUNCIONA */
+  .how { display: grid; gap: 20px; counter-reset: s; }
+  .how__step { background: var(--white); border-radius: var(--r-lg); padding: 32px 28px; box-shadow: 0 2px 0 var(--line); }
+  .how__step h3 { margin: 18px 0 8px; }
+  .how__step p { color: var(--text-soft); margin: 0; }
+  .how__num { color: var(--white); }
+  .how__step--0 .how__num { background: var(--blue); }
+  .how__step--1 .how__num { background: var(--pink); }
+  .how__step--2 .how__num { background: var(--gold); color: var(--navy); }
+  .how__step--3 .how__num { background: var(--navy); }
+  .how__cta { margin-top: 48px; }
+  @media (min-width: 700px) { .how { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 1100px) { .how { grid-template-columns: repeat(4, 1fr); } .how__step:nth-child(even) { transform: translateY(32px); } html.js .how__step.reveal:nth-child(even).is-in { transform: translateY(32px); } }
+
+  /* COMPARAÇÃO */
+  .compare { padding-block: clamp(48px, 6vw, 88px); }
+  .compare__grid { display: grid; gap: 24px; max-width: 1000px; margin-inline: auto; }
+  .compare__col { border-radius: var(--r-lg); padding: clamp(28px, 4vw, 44px); position: relative; }
+  .compare__col h3 { margin-bottom: 20px; }
+  .compare__col ul { display: grid; gap: 14px; }
+  .compare__col li { display: flex; gap: 12px; align-items: flex-start; font-size: 1.05rem; }
+  .compare__col li svg { flex: none; margin-top: 2px; }
+  .compare__col--old { background: rgba(255, 255, 255, 0.6); color: var(--text-soft); }
+  .compare__col--old h3 { color: var(--text-soft); }
+  .compare__col--old svg { color: #b3474f; }
+  .compare__col--new { background: var(--white); box-shadow: 0 20px 50px rgba(161, 52, 102, 0.16); }
+  .compare__col--new svg { color: var(--white); background: var(--pink); border-radius: 50%; padding: 3px; }
+  .compare__mark { position: absolute; top: -28px; right: 24px; width: 72px; height: 72px; }
+  /* O risco vive num span inline (o de fora é item flex, logo bloco): clone repete-o em cada linha. */
+  .strike__t { --strike: color-mix(in srgb, currentColor 65%, transparent); background: linear-gradient(var(--strike), var(--strike)) no-repeat 0 58% / 0 1px; -webkit-box-decoration-break: clone; box-decoration-break: clone; transition: background-size 0.6s var(--ease); transition-delay: calc(0.3s + var(--d, 0) * 120ms); }
+  .strike.is-in .strike__t, html:not(.js) .strike .strike__t { background-size: 100% 1px; }
+  @media (min-width: 800px) { .compare__grid { grid-template-columns: 0.9fr 1.1fr; align-items: center; } }
+
+  /* SERVIÇOS */
+  .tiles { display: grid; gap: 20px; }
+  .tile a { display: flex; flex-direction: column; height: 100%; padding: 32px 28px; border-radius: var(--r-lg); color: var(--navy); text-decoration: none; transition: transform 0.45s var(--bounce), box-shadow 0.45s var(--ease); }
+  .tile a:hover { transform: translateY(-8px) rotate(-1.2deg); box-shadow: 0 22px 40px rgba(11, 53, 86, 0.16); color: var(--navy); }
+  .tile:nth-child(even) a:hover { transform: translateY(-8px) rotate(1.2deg); }
+  .tile h3 { margin: 22px 0 8px; }
+  .tile p { flex: 1; margin-bottom: 20px; }
+  .tile__icon { display: grid; place-items: center; width: 64px; height: 64px; border-radius: 0 50% 50% 50%; background: var(--white); }
+  .tile__more { display: inline-flex; align-items: center; gap: 6px; font-weight: 600; }
+  .tile__more svg { transition: transform 0.3s var(--bounce); }
+  .tile a:hover .tile__more svg { transform: translateX(6px); }
+  .tile--blue a { background: var(--tint-blue); }
+  .tile--deep a { background: #d9e8f3; }
+  .tile--pink a { background: var(--tint-pink); }
+  .tile--gold a { background: var(--tint-gold); }
+  .tile--plum a { background: #f4e3ea; }
+  .tile--navy a { background: #e3e8ee; }
+  .tile--blue .tile__icon { color: var(--blue); } .tile--deep .tile__icon { color: var(--blue-deep); } .tile--pink .tile__icon { color: var(--pink); }
+  .tile--gold .tile__icon { color: var(--gold-text); } .tile--plum .tile__icon { color: var(--plum); } .tile--navy .tile__icon { color: var(--navy); }
+  @media (min-width: 640px) { .tiles { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 1000px) { .tiles { grid-template-columns: repeat(3, 1fr); } }
+
+  /* MÉTODO */
+  .method { overflow: hidden; }
+  .method h2, .method h3 { color: var(--navy); }
+  .method__lede { color: var(--navy) !important; }
+  .phases { display: grid; gap: 16px; }
+  .phase { background: rgba(255, 255, 255, 0.92); border-radius: var(--r-lg); padding: 26px 24px; }
+  .phase h3 { margin: 16px 0 6px; }
+  .phase p { margin: 0; color: var(--text-soft); font-size: 0.98rem; }
+  .phase__num { background: var(--navy); color: var(--white); }
+  .phase:last-child .phase__num { background: var(--pink); }
+  .gold-q { margin: clamp(48px, 6vw, 80px) 0 28px; max-width: 880px; }
+  .gold-q p { font-size: clamp(1.6rem, 1.1rem + 2vw, 2.8rem); font-weight: 600; line-height: 1.15; letter-spacing: -0.02em; color: var(--white); text-shadow: 0 2px 0 rgba(11, 53, 86, 0.25); }
+  .gold-q footer { margin-top: 14px; color: var(--navy); font-size: 1.05rem; }
+  @media (min-width: 700px) { .phases { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 1100px) { .phases { grid-template-columns: repeat(5, 1fr); } }
+
+  /* SEMPRE INCLUÍDO */
+  .perks { display: grid; gap: 36px 28px; }
+  .perk { text-align: center; padding-inline: 12px; }
+  .perk h3 { margin: 18px 0 6px; }
+  .perk p { color: var(--text-soft); margin: 0 auto; max-width: 30ch; }
+  .perk__icon { display: inline-grid; place-items: center; width: 84px; height: 84px; border-radius: 50%; color: var(--white); transition: transform 0.5s var(--bounce); }
+  .perk:hover .perk__icon { transform: rotate(-12deg) scale(1.08); }
+  .perk--blue .perk__icon { background: var(--blue); } .perk--pink .perk__icon { background: var(--pink); }
+  .perk--gold .perk__icon { background: var(--gold); color: var(--navy); } .perk--deep .perk__icon { background: var(--blue-deep); }
+  .perk--plum .perk__icon { background: var(--plum); }
+  .perk:nth-child(3n+1) .perk__icon { border-radius: 0 50% 50% 50%; }
+  @media (min-width: 640px) { .perks { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 1000px) { .perks { grid-template-columns: repeat(3, 1fr); } }
+
+  /* EMPRESAS */
+  .biz__grid { display: grid; gap: 48px; align-items: center; }
+  .biz__art { position: relative; width: min(100%, 420px); justify-self: center; }
+  .biz__drop { aspect-ratio: 1; border-radius: 50% 0 50% 50%; overflow: hidden; }
+  .biz__drop :global(picture), .biz__drop :global(img) { display: block; width: 100%; height: 100%; object-fit: cover; }
+  .biz__circle { position: absolute; left: -6%; bottom: -4%; width: 32%; aspect-ratio: 1; border-radius: 50%; background: var(--pink); }
+  .biz__lede { color: rgba(255, 255, 255, 0.88); margin-bottom: 24px; }
+  .biz__segs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 32px; }
+  .biz__segs li { padding: 0.4rem 0.95rem; border-radius: var(--r-pill); background: rgba(255, 255, 255, 0.14); font-size: 0.95rem; }
+  @media (min-width: 900px) { .biz__grid { grid-template-columns: 0.85fr 1.15fr; gap: 80px; } }
 </style>

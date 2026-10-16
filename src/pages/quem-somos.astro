@@ -2,11 +2,10 @@
 import { Picture } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
-import Icon from '../components/Icon.astro';
 import Star from '../components/Star.astro';
 import Wave from '../components/Wave.astro';
 import ContactCta from '../components/ContactCta.astro';
-import { team, values, principles, oath, compare } from '../data/content';
+import { team, values, principles, oath } from '../data/content';
 import { withBase } from '../config/site';
 ---
 <Base title="Quem Somos" description="Conheça a história, a missão, os valores e a equipa da Fada Madrinha, limpeza profissional em Luanda com método, cuidado e confiança.">
@@ -19,33 +18,6 @@ import { withBase } from '../config/site';
       <p class="lede mx-auto reveal" style="--d:2">A ideia nasceu de uma percepção simples: os espaços em Angola precisam de um serviço de limpeza e organização que vá além do básico, com método, com cuidado e com identidade própria.</p>
     </div>
   </section>
-
-  <!-- COMPARAÇÃO -->
-  <Wave color="var(--tint-pink)" />
-  <section class="section bg-pink compare" aria-labelledby="compare-title">
-    <div class="wrap">
-      <div class="head head--center">
-        <h2 id="compare-title" class="reveal">Cansado da limpeza de sempre?</h2>
-        <p class="reveal" style="--d:1">Muitas famílias e empresas em Angola conhecem bem estes problemas. Nós nascemos para os resolver.</p>
-      </div>
-      <div class="compare__grid">
-        <div class="compare__col compare__col--old reveal">
-          <h3>A limpeza de sempre</h3>
-          <ul>
-            {compare.others.map((o, i) => <li class="reveal strike" style={`--d:${i + 1}`}><Icon name="x" size={22} stroke={2.6} /><span><span class="strike__t">{o}</span></span></li>)}
-          </ul>
-        </div>
-        <div class="compare__col compare__col--new reveal" style="--d:2">
-          <img src={withBase('/logo/mark.png')} width="72" height="72" alt="" class="compare__mark" />
-          <h3>Com a Fada Madrinha</h3>
-          <ul>
-            {compare.us.map((o, i) => <li class="reveal" style={`--d:${i + 2}`}><Icon name="check" size={22} stroke={2.6} /><span>{o}</span></li>)}
-          </ul>
-        </div>
-      </div>
-    </div>
-  </section>
-  <Wave color="var(--white)" bg="var(--tint-pink)" flip />
 
   <section class="section bg-white" aria-labelledby="val-title">
     <div class="wrap">
@@ -124,23 +96,6 @@ import { withBase } from '../config/site';
 
 <style>
   .story { font-size: clamp(1.4rem, 1.1rem + 1.3vw, 2.2rem); line-height: 1.3; font-weight: 500; color: var(--navy); margin-bottom: 28px; }
-  .compare { padding-block: clamp(48px, 6vw, 88px); }
-  .compare__grid { display: grid; gap: 24px; max-width: 1000px; margin-inline: auto; }
-  .compare__col { border-radius: var(--r-lg); padding: clamp(28px, 4vw, 44px); position: relative; }
-  .compare__col h3 { margin-bottom: 20px; }
-  .compare__col ul { display: grid; gap: 14px; }
-  .compare__col li { display: flex; gap: 12px; align-items: flex-start; font-size: 1.05rem; }
-  .compare__col li svg { flex: none; margin-top: 2px; }
-  .compare__col--old { background: rgba(255, 255, 255, 0.6); color: var(--text-soft); }
-  .compare__col--old h3 { color: var(--text-soft); }
-  .compare__col--old svg { color: #b3474f; }
-  .compare__col--new { background: var(--white); box-shadow: 0 20px 50px rgba(161, 52, 102, 0.16); }
-  .compare__col--new svg { color: var(--white); background: var(--pink); border-radius: 50%; padding: 3px; }
-  .compare__mark { position: absolute; top: -28px; right: 24px; width: 72px; height: 72px; }
-  /* O risco vive num span inline (o de fora é item flex, logo bloco): clone repete-o em cada linha. */
-  .strike__t { --strike: color-mix(in srgb, currentColor 65%, transparent); background: linear-gradient(var(--strike), var(--strike)) no-repeat 0 58% / 0 1px; -webkit-box-decoration-break: clone; box-decoration-break: clone; transition: background-size 0.6s var(--ease); transition-delay: calc(0.3s + var(--d, 0) * 120ms); }
-  .strike.is-in .strike__t, html:not(.js) .strike .strike__t { background-size: 100% 1px; }
-  @media (min-width: 800px) { .compare__grid { grid-template-columns: 0.9fr 1.1fr; align-items: center; } }
   .swatches { display: grid; gap: 20px; }
   .swatch { border-radius: var(--r-lg); padding: 36px 32px; min-height: 280px; display: flex; flex-direction: column; justify-content: flex-end; color: var(--ink); transition: transform 0.45s var(--bounce); }
   .swatch:hover { transform: translateY(-8px) rotate(-1deg); }

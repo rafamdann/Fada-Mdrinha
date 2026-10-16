@@ -1,10 +1,9 @@
 ---
 import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
-import Icon from '../components/Icon.astro';
 import Star from '../components/Star.astro';
 import ContactCta from '../components/ContactCta.astro';
-import { journey, phases, included } from '../data/content';
+import { journey, phases } from '../data/content';
 ---
 <Base title="O Nosso Método" description="Do primeiro contacto ao acompanhamento depois do serviço: conheça a experiência Fada Madrinha, desenhada para que cada contacto seja memorável.">
   <PageHero tone="gold" title="Não limpamos apenas espaços. Cuidamos das pessoas que vivem neles." text="Forma uma opinião sobre nós muito antes de começarmos a limpar: na rapidez da resposta, na simpatia, na pontualidade. Por isso, desenhámos cada passo." />
@@ -40,25 +39,6 @@ import { journey, phases, included } from '../data/content';
           <li class="reveal" style={`--d:${i}`}><span class="num-dot">{i + 1}</span><h3>{p.title}</h3><p>{p.text}</p></li>
         ))}
       </ol>
-    </div>
-  </section>
-
-  <!-- SEMPRE INCLUÍDO -->
-  <section class="section" aria-labelledby="inc-title">
-    <div class="wrap">
-      <div class="head head--center">
-        <h2 id="inc-title" class="reveal">Sempre incluído, sem pedir</h2>
-        <p class="reveal" style="--d:1">O que recebe em cada visita, seja uma casa ou uma empresa.</p>
-      </div>
-      <ul class="perks">
-        {included.map((p, i) => (
-          <li class={`perk perk--${p.tone} reveal`} style={`--d:${i % 3}`}>
-            <span class="perk__icon"><Icon name={p.icon} size={28} /></span>
-            <h3>{p.title}</h3>
-            <p>{p.text}</p>
-          </li>
-        ))}
-      </ul>
     </div>
   </section>
 
@@ -101,18 +81,6 @@ import { journey, phases, included } from '../data/content';
   .phases p { margin: 0; color: var(--text-soft); }
   @media (min-width: 700px) { .phases { grid-template-columns: repeat(2, 1fr); } }
   @media (min-width: 1100px) { .phases { grid-template-columns: repeat(5, 1fr); } }
-  .perks { display: grid; gap: 36px 28px; }
-  .perk { text-align: center; padding-inline: 12px; }
-  .perk h3 { margin: 18px 0 6px; }
-  .perk p { color: var(--text-soft); margin: 0 auto; max-width: 30ch; }
-  .perk__icon { display: inline-grid; place-items: center; width: 84px; height: 84px; border-radius: 50%; color: var(--white); transition: transform 0.5s var(--bounce); }
-  .perk:hover .perk__icon { transform: rotate(-12deg) scale(1.08); }
-  .perk--blue .perk__icon { background: var(--blue); } .perk--pink .perk__icon { background: var(--pink); }
-  .perk--gold .perk__icon { background: var(--gold); color: var(--navy); } .perk--deep .perk__icon { background: var(--blue-deep); }
-  .perk--plum .perk__icon { background: var(--plum); }
-  .perk:nth-child(3n+1) .perk__icon { border-radius: 0 50% 50% 50%; }
-  @media (min-width: 640px) { .perks { grid-template-columns: repeat(2, 1fr); } }
-  @media (min-width: 1000px) { .perks { grid-template-columns: repeat(3, 1fr); } }
   .gold { overflow: hidden; }
   .gold__label { font-size: 1.2rem; color: var(--gold-text); }
   .gold__q { font-size: clamp(2rem, 1.3rem + 3vw, 3.8rem); font-weight: 600; line-height: 1.1; letter-spacing: -0.025em; color: var(--navy); margin-bottom: 28px; }

@@ -1,19 +1,15 @@
 ---
-/** Faixa decorativa no topo de todas as páginas: só brilhos, sem texto. */
+/** Faixa decorativa no topo de todas as páginas: os dois brilhos da versão 1, sem texto. */
 import Star from './Star.astro';
-const colors = ['var(--gold)', 'var(--pink)', 'var(--blue)', '#fff'];
-const sizes = [14, 10, 18, 12, 16, 10, 14];
-const stars = Array.from({ length: 15 }, (_, i) => ({ color: colors[i % colors.length], s: sizes[i % sizes.length], t: ((i * 0.37) % 1.8).toFixed(2) }));
 ---
 <div class="announce" aria-hidden="true">
   <div class="wrap announce__inner">
-    {stars.map((st, i) => <Star class={i >= 7 ? 'announce__wide' : undefined} style={`position:relative;--s:${st.s}px;--t:${st.t}s`} color={st.color} />)}
+    <Star style="position:relative;--s:14px;--t:.2s" color="var(--gold)" />
+    <Star style="position:relative;--s:14px;--t:1.1s" color="var(--pink)" />
   </div>
 </div>
 
 <style>
   .announce { background: var(--navy); }
-  .announce__inner { display: flex; align-items: center; justify-content: space-evenly; gap: 12px; min-height: 42px; padding-block: 8px; }
-  .announce__inner :global(.announce__wide) { display: none; }
-  @media (min-width: 760px) { .announce__inner :global(.announce__wide) { display: block; } }
+  .announce__inner { display: flex; align-items: center; justify-content: center; gap: 12px; min-height: 42px; padding-block: 8px; }
 </style>
