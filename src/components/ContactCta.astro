@@ -20,11 +20,10 @@ const {
     <p class="cta__text reveal" style="--d:1">{text}</p>
     <div class="actions actions--center reveal" style="--d:2">
       <a href={waLink(message)} class="btn btn--white btn--lg" target="_blank" rel="noopener"><Icon name="whatsapp" /> Pedir orçamento</a>
-      <a href={telLink} class="btn btn--outline-light btn--lg"><Icon name="phone" /> Ligar</a>
+      <a href={telLink} class="btn btn--outline-light btn--lg"><Icon name="phone" /> Ligar <span class="cta__tel">{site.phone.display}</span></a>
     </div>
     <p class="cta__promise reveal" style="--d:3">{site.replyPromise}</p>
     <ul class="cta__details reveal" style="--d:4">
-      <li><Icon name="phone" size={20} /><a href={telLink}>{site.phone.display}</a></li>
       <li><Icon name="mail" size={20} /><a href={mailLink}>{site.email}</a></li>
       <li><Icon name="instagram" size={20} /><a href={site.instagram.url} target="_blank" rel="noopener">@{site.instagram.handle}</a></li>
       <li><Icon name="pin" size={20} /><span>{site.address.display}</span></li>
@@ -41,6 +40,7 @@ const {
   .cta__inner { position: relative; }
   .cta h2 { color: var(--white); font-size: clamp(2.4rem, 1.4rem + 4vw, 4.4rem); max-width: 14ch; margin-inline: auto; }
   .cta__text { font-size: clamp(1.1rem, 1rem + 0.5vw, 1.35rem); color: rgba(255, 255, 255, 0.92); max-width: 44ch; margin: 0 auto 32px; }
+  .cta__tel { font-weight: 400; white-space: nowrap; }
   .cta__promise { margin-top: 18px; color: rgba(255, 255, 255, 0.9); }
   .cta__details { margin-top: 48px; display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 28px; }
   .cta__details li { display: flex; align-items: center; gap: 8px; min-height: 44px; }

@@ -2,10 +2,11 @@
 import Base from '../layouts/Base.astro';
 import Icon from '../components/Icon.astro';
 import PageHero from '../components/PageHero.astro';
+import Marquee from '../components/Marquee.astro';
 import Faq from '../components/Faq.astro';
 import ContactCta from '../components/ContactCta.astro';
 import { waLink, whatsappMessages } from '../config/site';
-import { services, faq } from '../data/content';
+import { services, howItWorks, faq } from '../data/content';
 ---
 <Base title="Serviços" description="Limpeza residencial, empresarial, higienização especializada, organização de espaços, pós-obra e estofos em Luanda. Veja como trabalhamos em cada serviço.">
   <PageHero tone="blue" title="Seis serviços, o mesmo cuidado" text="Cada serviço é adaptado ao seu espaço e à sua rotina. Diga-nos o que precisa e preparamos uma proposta personalizada, clara e sem letras pequenas.">
@@ -13,6 +14,8 @@ import { services, faq } from '../data/content';
       {services.map((s) => <a href={`#${s.id}`}>{s.title}</a>)}
     </nav>
   </PageHero>
+
+  <Marquee items={services.map((s) => s.title)} tone="azul" />
 
   {services.map((s, i) => (
     <section id={s.id} class:list={['section', 'svc', `svc--${s.tone}`, { 'svc--alt': i % 2 === 1 }]} aria-labelledby={`${s.id}-t`}>
@@ -33,6 +36,28 @@ import { services, faq } from '../data/content';
       </div>
     </section>
   ))}
+
+  <!-- COMO FUNCIONA -->
+  <section id="como-funciona" class="section" aria-labelledby="como-title">
+    <div class="wrap">
+      <div class="head head--center">
+        <h2 id="como-title" class="reveal">Pedir uma limpeza é <span class="swash reveal">simples</span></h2>
+        <p class="reveal" style="--d:1">Do primeiro olá ao brilho final, em quatro passos.</p>
+      </div>
+      <ol class="how">
+        {howItWorks.map((s, i) => (
+          <li class={`how__step how__step--${i} reveal`} style={`--d:${i}`}>
+            <span class="num-dot how__num">{i + 1}</span>
+            <h3>{s.title}</h3>
+            <p>{s.text}</p>
+          </li>
+        ))}
+      </ol>
+      <div class="actions actions--center how__cta reveal">
+        <a href={waLink()} class="btn btn--pink btn--lg" target="_blank" rel="noopener"><Icon name="whatsapp" /> Começar agora</a>
+      </div>
+    </div>
+  </section>
 
   <section class="section bg-gold" aria-labelledby="faq-t">
     <div class="wrap wrap--narrow">
@@ -64,6 +89,19 @@ import { services, faq } from '../data/content';
   .svc__steps li { display: flex; align-items: center; gap: 14px; }
   .svc__steps .num-dot { width: 38px; height: 38px; font-size: 1rem; background: var(--tint-blue); color: var(--navy); }
   .svc--alt .svc__steps .num-dot { background: var(--tint-pink); color: var(--pink-text); }
+  #como-funciona { scroll-margin-top: var(--header-h); }
+  .how { display: grid; gap: 20px; }
+  .how__step { background: var(--white); border-radius: var(--r-lg); padding: 32px 28px; box-shadow: 0 2px 0 var(--line); }
+  .how__step h3 { margin: 18px 0 8px; }
+  .how__step p { color: var(--text-soft); margin: 0; }
+  .how__num { color: var(--white); }
+  .how__step--0 .how__num { background: var(--blue); }
+  .how__step--1 .how__num { background: var(--pink); }
+  .how__step--2 .how__num { background: var(--gold); color: var(--navy); }
+  .how__step--3 .how__num { background: var(--navy); }
+  .how__cta { margin-top: 48px; }
+  @media (min-width: 700px) { .how { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 1100px) { .how { grid-template-columns: repeat(4, 1fr); } .how__step:nth-child(even) { transform: translateY(32px); } html.js .how__step.reveal:nth-child(even).is-in { transform: translateY(32px); } }
   @media (min-width: 900px) {
     .svc__grid { grid-template-columns: 0.8fr 1.2fr; gap: 72px; }
     .svc--alt .svc__badge { order: 2; }

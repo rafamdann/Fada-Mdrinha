@@ -3,9 +3,8 @@
  * portifolio (Como funciona, serviços), Apresentação (o problema), brand book (método, jornada, cultura).
  * Editar aqui para mudar o texto em todas as páginas.
  */
-import irina from '../assets/team/irina.jpg';
+import type { ImageMetadata } from 'astro';
 import nguelengue from '../assets/team/nguelengue.jpg';
-import jorge from '../assets/team/jorge.jpg';
 
 export type IconName = 'home' | 'building' | 'drop' | 'layout' | 'tools' | 'sofa';
 export type Tone = 'blue' | 'pink' | 'gold' | 'deep' | 'plum' | 'navy';
@@ -13,16 +12,16 @@ export type Tone = 'blue' | 'pink' | 'gold' | 'deep' | 'plum' | 'navy';
 /* ---------------- Serviços ---------------- */
 export const services = [
   {
-    id: 'residencial', title: 'Limpeza Residencial', icon: 'home', tone: 'blue',
-    short: 'Casas e apartamentos sempre limpos, organizados e acolhedores.',
-    long: 'Limpezas pontuais ou periódicas com o cuidado de quem trata do próprio lar. Seguimos uma sequência oficial por divisão e terminamos sempre com uma inspecção final feita consigo.',
-    steps: ['Confirmamos consigo o que pretende', 'Sala, quartos, cozinha e casas de banho, pela ordem oficial', 'De cima para baixo, do mais limpo para o mais sujo', 'Inspecção final e breve visita consigo'],
-  },
-  {
     id: 'empresarial', title: 'Limpeza Empresarial', icon: 'building', tone: 'deep',
     short: 'Escritórios e empresas com ambientes profissionais e higienizados.',
     long: 'Planos recorrentes com a frequência à medida da sua operação, equipa identificada, supervisão em cada visita e confidencialidade absoluta.',
     steps: ['Equipamentos, mesas e cadeiras, salas de reunião', 'Recepção, casas de banho e copa', 'Pavimentos e revisão final', 'Supervisão por uma Fada Líder'],
+  },
+  {
+    id: 'residencial', title: 'Limpeza Residencial', icon: 'home', tone: 'blue',
+    short: 'Casas e apartamentos sempre limpos, organizados e acolhedores.',
+    long: 'Limpezas pontuais ou periódicas com o cuidado de quem trata do próprio lar. Seguimos uma sequência oficial por divisão e terminamos sempre com uma inspecção final feita consigo.',
+    steps: ['Confirmamos consigo o que pretende', 'Sala, quartos, cozinha e casas de banho, pela ordem oficial', 'De cima para baixo, do mais limpo para o mais sujo', 'Inspecção final e breve visita consigo'],
   },
   {
     id: 'higienizacao', title: 'Higienização Especializada', icon: 'drop', tone: 'pink',
@@ -54,7 +53,7 @@ export const services = [
 export const howItWorks = [
   { title: 'Fale connosco', text: 'Conte-nos o que precisa pelo WhatsApp e receba uma proposta à medida, clara e sem letras pequenas.' },
   { title: 'Agendamos juntos', text: 'Escolhemos consigo a melhor data e hora. Um dia antes, recebe um lembrete com a equipa que vai.' },
-  { title: 'Nós tratamos de tudo', text: 'A equipa chega a horas, de uniforme, com todos os produtos, e cuida de cada detalhe.' },
+  { title: 'Nós tratamos de tudo', text: 'A equipa chega a horas, com todos os produtos, e cuida de cada detalhe.' },
   { title: 'Verificamos consigo', text: 'Antes de sair, percorremos o espaço consigo para garantir que está tudo como espera.' },
 ];
 
@@ -79,7 +78,7 @@ export const compare = {
 /* ---------------- Sempre incluído (brand book) ---------------- */
 export const included = [
   { title: 'Produtos e equipamentos', text: 'Levamos tudo o que é preciso. Não tem de comprar nada.', icon: 'sparkle', tone: 'blue' },
-  { title: 'Equipa identificada', text: 'Uniforme impecável e crachá visível. Sabe sempre quem entra.', icon: 'badge', tone: 'pink' },
+  { title: 'Equipa identificada', text: 'Crachá visível. Sabe sempre quem entra.', icon: 'badge', tone: 'pink' },
   { title: 'Supervisão', text: 'Uma Fada Líder acompanha a equipa e verifica o resultado.', icon: 'eye', tone: 'gold' },
   { title: 'Inspecção consigo', text: 'Nada é entregue sem uma breve visita ao espaço consigo.', icon: 'check', tone: 'deep' },
   { title: 'Pontualidade', text: 'Se houver um imprevisto, avisamos nós, antes de ter de ligar.', icon: 'clock', tone: 'plum' },
@@ -108,19 +107,11 @@ export const journey = [
 ];
 
 /* ---------------- Empresas ---------------- */
-export const segments = ['Escritórios', 'Clínicas', 'Condomínios', 'Imobiliárias', 'Alojamento local', 'Hotéis boutique', 'Escolas', 'Lojas'];
+export const segments = ['Escritórios', 'Clínicas', 'Condomínios', 'Alojamento local', 'Hotéis', 'Escolas', 'Lojas'];
 export const officeOrder = ['Equipamentos electrónicos', 'Mesas e cadeiras', 'Salas de reunião', 'Recepção', 'Casas de banho', 'Copa', 'Pavimentos'];
-export const twentyPointGroups = [
-  { title: 'A equipa', points: ['Uniforme', 'Pontualidade', 'Educação', 'Organização'] },
-  { title: 'O material', points: ['Produtos', 'Equipamentos'] },
-  { title: 'As superfícies', points: ['Limpeza geral', 'Vidros', 'Rodapés', 'Portas', 'Interruptores'] },
-  { title: 'As áreas críticas', points: ['Casas de banho', 'Cozinha e copa', 'Pavimentos'] },
-  { title: 'O acabamento', points: ['Aroma', 'Organização final'] },
-  { title: 'A relação consigo', points: ['Comunicação', 'Inspecção com o cliente', 'Satisfação confirmada', 'Um gesto final de cuidado'] },
-];
 export const commitments = [
   { title: 'Pontualidade', text: 'Horários acordados são horários cumpridos. Qualquer imprevisto é comunicado de imediato.' },
-  { title: 'Supervisão', text: 'Uma Fada Líder verifica os 20 pontos de excelência antes de considerar o serviço concluído.' },
+  { title: 'Supervisão', text: 'Uma Fada Líder verifica o resultado antes de considerar o serviço concluído.' },
   { title: 'Confidencialidade', text: 'A equipa não fotografa, não comenta e não partilha nada do que vê.' },
   { title: 'Recuperação', text: 'Se algo não corresponder ao contratado por culpa nossa, corrigimos sem custos adicionais.' },
 ];
@@ -132,11 +123,14 @@ export const complaintSteps = [
 ];
 
 /* ---------------- Quem somos ---------------- */
-// TODO (cliente): fotografia do Jorge Hilário em alta resolução.
-export const team = [
-  { name: 'Irina André', role: 'Diretora de Operações', bio: 'Cofundadora. Garante que o método e o padrão de qualidade são cumpridos em cada serviço.', photo: irina, alt: 'Irina André, Diretora de Operações, de blazer cinzento, a sorrir' },
+// Sem photo, aparece um espaço em branco no lugar da fotografia.
+// TODO (cliente): nova fotografia da Irina André.
+// TODO (cliente): o terceiro lugar está vazio de propósito; falta saber quem entra para o lugar do Jorge Hilário (nome, cargo, bio, fotografia).
+type Member = { name: string; role: string; bio: string; photo?: ImageMetadata; alt?: string };
+export const team: (Member | null)[] = [
+  { name: 'Irina André', role: 'Diretora de Operações', bio: 'Cofundadora. Garante que o método e o padrão de qualidade são cumpridos em cada serviço.' },
   { name: 'Nguelengue Savinona', role: 'Diretora Financeira', bio: 'Cofundadora. Responsável pela gestão financeira e pelo crescimento sustentável da empresa.', photo: nguelengue, alt: 'Nguelengue Savinona, Diretora Financeira, de blazer cinzento' },
-  { name: 'Jorge Hilário', role: 'Diretor de Marketing e Marca', bio: 'Responsável pela identidade, comunicação e posicionamento da marca.', photo: jorge, alt: 'Jorge Hilário, Diretor de Marketing e Marca, de fato escuro e gravata' },
+  null,
 ];
 export const values = [
   { title: 'Confiança', words: 'Organização, profissionalismo e limpeza em cada visita.', tone: 'blue' },

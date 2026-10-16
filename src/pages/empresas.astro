@@ -7,11 +7,11 @@ import Wave from '../components/Wave.astro';
 import Faq from '../components/Faq.astro';
 import ContactCta from '../components/ContactCta.astro';
 import { site, waLink, whatsappMessages } from '../config/site';
-import { segments, officeOrder, twentyPointGroups, commitments, complaintSteps, faq } from '../data/content';
+import { segments, officeOrder, commitments, complaintSteps, faq } from '../data/content';
 import janela from '../assets/photos/janela.jpg';
 const companyFaq = faq.filter((f) => f.empresas);
 ---
-<Base title="Empresas" description="Limpeza profissional para escritórios, clínicas, condomínios, imobiliárias, alojamento local, hotéis boutique, escolas e lojas em Luanda. Supervisão, pontualidade e confidencialidade.">
+<Base title="Empresas" description="Limpeza profissional para escritórios, clínicas, condomínios, alojamento local, hotéis, escolas e lojas em Luanda. Supervisão, pontualidade e confidencialidade.">
   <PageHero tone="deep" title="Uma solução à medida da sua empresa" text="Planos de limpeza para a sua operação, com elevados padrões de qualidade, discrição e pontualidade.">
     <div class="actions reveal" style="--d:2;margin-top:28px">
       <a href={waLink(whatsappMessages.empresas)} class="btn btn--white btn--lg" target="_blank" rel="noopener"><Icon name="whatsapp" /> Pedir orçamento</a>
@@ -40,23 +40,6 @@ const companyFaq = faq.filter((f) => f.empresas);
       </div>
       <div class="ord__art reveal">
         <Picture src={janela} formats={['avif', 'webp']} widths={[320, 480, 720]} sizes="(min-width: 900px) 400px, 80vw" alt="Mão com luva amarela a limpar a janela de um escritório" />
-      </div>
-    </div>
-  </section>
-
-  <section class="section bg-gold" aria-labelledby="pts-t">
-    <div class="wrap">
-      <div class="head head--center">
-        <h2 id="pts-t" class="reveal">Os 20 Pontos de Excelência</h2>
-        <p class="reveal" style="--d:1">Nenhum serviço termina antes da inspecção final. A Fada Líder verifica cada ponto antes de o considerar concluído.</p>
-      </div>
-      <div class="pts">
-        {twentyPointGroups.map((g, i) => (
-          <div class="pts__group reveal" style={`--d:${i % 3}`}>
-            <h3>{g.title}</h3>
-            <ul>{g.points.map((p) => <li><Icon name="check" size={18} stroke={2.6} /> {p}</li>)}</ul>
-          </div>
-        ))}
       </div>
     </div>
   </section>
@@ -114,14 +97,6 @@ const companyFaq = faq.filter((f) => f.empresas);
   .ord__art { width: min(100%, 400px); aspect-ratio: 1; justify-self: center; border-radius: 50% 50% 0 50%; overflow: hidden; }
   .ord__art :global(picture), .ord__art :global(img) { display: block; width: 100%; height: 100%; object-fit: cover; }
   @media (min-width: 900px) { .ord { grid-template-columns: 1.2fr 0.8fr; gap: 80px; } }
-  .pts { display: grid; gap: 20px; }
-  .pts__group { background: var(--white); border-radius: var(--r-lg); padding: 28px; }
-  .pts__group h3 { color: var(--gold-text); margin-bottom: 12px; }
-  .pts__group ul { display: grid; gap: 8px; }
-  .pts__group li { display: flex; align-items: center; gap: 10px; }
-  .pts__group svg { color: var(--white); background: var(--gold); border-radius: 50%; padding: 2px; flex: none; }
-  @media (min-width: 700px) { .pts { grid-template-columns: repeat(2, 1fr); } }
-  @media (min-width: 1000px) { .pts { grid-template-columns: repeat(3, 1fr); } }
   .commit { display: grid; gap: 24px; }
   .commit li { background: var(--white); border-radius: var(--r-lg); padding: 30px 28px; transition: transform 0.45s var(--bounce); }
   .commit li:hover { transform: translateY(-6px); }
