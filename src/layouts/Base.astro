@@ -5,7 +5,6 @@ import '@fontsource/jost/600.css';
 import '@fontsource/barlow-semi-condensed/600.css';
 import '../styles/fonts.css';
 import '../styles/global.css';
-import Announcement from '../components/Announcement.astro';
 import Header from '../components/Header.astro';
 import WhatsAppFloat from '../components/WhatsAppFloat.astro';
 import FairyFlight from '../components/FairyFlight.astro';
@@ -61,7 +60,6 @@ const jsonLd = {
   </head>
   <body>
     <a href="#conteudo" class="skip-link">Saltar para o conteúdo</a>
-    <Announcement />
     <Header />
     <main id="conteudo" tabindex="-1"><slot /></main>
     <slot name="footer" />

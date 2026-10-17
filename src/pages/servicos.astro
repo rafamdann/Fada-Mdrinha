@@ -8,11 +8,7 @@ import { waLink, whatsappMessages } from '../config/site';
 import { services, faq } from '../data/content';
 ---
 <Base title="Serviços" description="Limpeza residencial, empresarial, higienização especializada, organização de espaços, pós-obra e estofos em Luanda. Veja como trabalhamos em cada serviço.">
-  <PageHero tone="blue" title="Seis serviços, o mesmo cuidado" text="Cada serviço é adaptado ao seu espaço e à sua rotina. Diga-nos o que precisa e preparamos uma proposta personalizada, clara e sem letras pequenas.">
-    <nav class="jump reveal" style="--d:2" aria-label="Ir para o serviço">
-      {services.map((s) => <a href={`#${s.id}`}>{s.title}</a>)}
-    </nav>
-  </PageHero>
+  <PageHero tone="blue" title="Seis serviços, o mesmo cuidado" text="Cada serviço é adaptado ao seu espaço e à sua rotina. Diga-nos o que precisa e preparamos uma proposta personalizada, clara e sem letras pequenas." />
 
   {services.map((s, i) => (
     <section id={s.id} class:list={['section', 'svc', `svc--${s.tone}`, { 'svc--alt': i % 2 === 1 }]} aria-labelledby={`${s.id}-t`}>
@@ -45,9 +41,6 @@ import { services, faq } from '../data/content';
 </Base>
 
 <style>
-  .jump { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 32px; }
-  .jump a { display: inline-flex; align-items: center; min-height: 46px; padding: 0 1.1rem; border-radius: var(--r-pill); background: var(--white); color: var(--navy); font-weight: 500; text-decoration: none; border: 2px solid transparent; transition: transform 0.35s var(--bounce), border-color 0.2s; }
-  .jump a:hover { transform: translateY(-3px); border-color: var(--pink); color: var(--navy); }
   .svc { scroll-margin-top: var(--header-h); }
   .svc--alt { background: var(--white); }
   .svc__grid { display: grid; gap: 36px; align-items: center; }
