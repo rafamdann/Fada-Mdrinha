@@ -6,17 +6,14 @@ import PageHero from '../components/PageHero.astro';
 import Wave from '../components/Wave.astro';
 import Faq from '../components/Faq.astro';
 import ContactCta from '../components/ContactCta.astro';
-import { site, waLink, whatsappMessages } from '../config/site';
+import { site, whatsappMessages } from '../config/site';
 import { segments, officeOrder, commitments, complaintSteps, faq } from '../data/content';
 import janela from '../assets/photos/janela.jpg';
 const companyFaq = faq.filter((f) => f.empresas);
 ---
 <Base title="Empresas" description="Limpeza profissional para escritórios, clínicas, condomínios, alojamento local, hotéis, escolas e lojas em Luanda. Supervisão, pontualidade e confidencialidade.">
   <PageHero tone="deep" title="Uma solução à medida da sua empresa" text="Planos de limpeza para a sua operação, com elevados padrões de qualidade, discrição e pontualidade.">
-    <div class="actions reveal" style="--d:2;margin-top:28px">
-      <a href={waLink(whatsappMessages.empresas)} class="btn btn--white btn--lg" target="_blank" rel="noopener"><Icon name="whatsapp" /> Pedir orçamento</a>
-    </div>
-    <p class="reassure reveal" style="--d:3;color:rgba(255,255,255,.85)">{site.replyPromise}</p>
+    <p class="reassure reveal" style="--d:2;margin-top:28px;color:rgba(255,255,255,.85)">{site.replyPromise}</p>
   </PageHero>
 
   <section class="section" aria-labelledby="seg-t">
@@ -72,9 +69,9 @@ const companyFaq = faq.filter((f) => f.empresas);
       </ol>
     </div>
   </section>
-  <Wave color="var(--white)" bg="var(--tint-pink)" flip />
+  <Wave color="var(--tint-gold)" bg="var(--tint-pink)" flip />
 
-  <section class="section bg-white" aria-labelledby="fq-t">
+  <section class="section bg-gold" aria-labelledby="fq-t">
     <div class="wrap wrap--narrow">
       <div class="head head--center"><h2 id="fq-t" class="reveal">Perguntas das empresas</h2></div>
       <Faq items={companyFaq} />
@@ -85,8 +82,10 @@ const companyFaq = faq.filter((f) => f.empresas);
 </Base>
 
 <style>
-  .segs { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; max-width: 900px; margin: 0 auto; }
-  .segs li { padding: 0.8rem 1.4rem; border-radius: var(--r-pill); background: var(--white); color: var(--navy); font-size: clamp(1.05rem, 1rem + 0.4vw, 1.3rem); font-weight: 500; box-shadow: 0 4px 0 var(--line); transition: transform 0.35s var(--bounce); }
+  /* Pílulas da mesma largura, centradas: as linhas alinham (4 + 3 no ecrã largo, 2 por linha no telemóvel). */
+  .segs { --cols: 2; --gap: 12px; display: flex; flex-wrap: wrap; justify-content: center; gap: var(--gap); max-width: 900px; margin: 0 auto; }
+  @media (min-width: 640px) { .segs { --cols: 4; } }
+  .segs li { flex: 0 0 calc((100% - (var(--cols) - 1) * var(--gap)) / var(--cols)); display: grid; place-items: center; text-align: center; line-height: 1.2; min-height: 58px; padding: 0.8rem 0.8rem; border-radius: var(--r-pill); background: var(--white); color: var(--navy); font-size: clamp(1.05rem, 1rem + 0.4vw, 1.3rem); font-weight: 500; box-shadow: 0 4px 0 var(--line); transition: transform 0.35s var(--bounce); }
   .segs li:nth-child(4n+1) { background: var(--tint-blue); } .segs li:nth-child(4n+2) { background: var(--tint-pink); } .segs li:nth-child(4n+3) { background: var(--tint-gold); }
   .segs li:hover { transform: translateY(-4px) rotate(-2deg); }
   .ord { display: grid; gap: 48px; align-items: center; }
