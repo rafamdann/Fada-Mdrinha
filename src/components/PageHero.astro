@@ -1,37 +1,94 @@
 ---
-/** Cabeçalho das páginas internas: cor da página, formas da marca a flutuar e brilhos. */
+/**
+ * Cabeçalho das páginas internas. Ocupa quase todo o ecrã (deixa espreitar a secção seguinte):
+ * texto à esquerda, composição com fotografia em forma de gota e formas da marca à direita,
+ * cinco brilhos espalhados e um convite a descer.
+ * Sem `image`, a gota mostra o símbolo da marca.
+ */
+import { Picture } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
 import Star from './Star.astro';
-interface Props { title: string; text?: string; tone?: 'blue' | 'pink' | 'gold' | 'deep' }
-const { title, text, tone = 'blue' } = Astro.props;
+import { withBase } from '../config/site';
+interface Props {
+  title: string;
+  text?: string;
+  tone?: 'blue' | 'pink' | 'gold' | 'deep';
+  label?: string;
+  image?: ImageMetadata;
+  imageAlt?: string;
+  imagePosition?: string;
+}
+const { title, text, tone = 'blue', label, image, imageAlt = '', imagePosition = '50% 40%' } = Astro.props;
 ---
 <section class:list={['phero', `phero--${tone}`]}>
-  <span class="phero__drop float" aria-hidden="true"></span>
-  <span class="phero__circle float" style="--t:-2s" aria-hidden="true"></span>
-  <Star style="top:22%;left:6%;--s:22px;--t:.3s" />
-  <Star style="bottom:18%;left:42%;--s:14px;--t:1.2s" color="var(--pink)" />
-  <div class="wrap phero__inner">
-    <h1 class="reveal" set:html={title} />
-    {text && <p class="lede reveal" style="--d:1">{text}</p>}
-    <slot />
+  <Star style="top:14%;left:4%;--s:24px;--t:.3s" color="var(--gold)" />
+  <Star style="top:9%;left:46%;--s:14px;--t:1.7s" color="var(--pink)" />
+  <Star style="bottom:22%;left:40%;--s:18px;--t:.9s" color={tone === 'deep' ? '#fff' : 'var(--blue)'} />
+  <Star style="top:30%;right:3%;--s:16px;--t:2.3s" color={tone === 'gold' ? 'var(--pink)' : 'var(--gold)'} />
+  <Star style="bottom:12%;right:30%;--s:12px;--t:1.2s" color={tone === 'deep' ? 'var(--gold)' : 'var(--pink)'} />
+
+  <div class="wrap phero__grid">
+    <div class="phero__copy">
+      {label && <p class="phero__label reveal">{label}</p>}
+      <h1 class="reveal" style="--d:1" set:html={title} />
+      {text && <p class="lede reveal" style="--d:2">{text}</p>}
+      <slot />
+    </div>
+
+    <div class="phero__art reveal" style="--d:2" aria-hidden={image ? undefined : 'true'}>
+      <span class="phero__ring" aria-hidden="true"></span>
+      <div class:list={['phero__drop', { 'phero__drop--fairy': !image }]}>
+        {image
+          ? <Picture src={image} formats={['avif', 'webp']} widths={[320, 480, 720]} sizes="(min-width: 960px) 380px, 70vw" alt={imageAlt} loading="eager" style={`object-position:${imagePosition}`} />
+          : <img src={withBase('/logo/mark.png')} width="72" height="72" alt="" />}
+      </div>
+      <span class="phero__circle phero__circle--a float" aria-hidden="true"></span>
+      <span class="phero__circle phero__circle--b float" style="--t:-3s" aria-hidden="true"></span>
+    </div>
   </div>
+
+  <a href="#depois-do-topo" class="phero__cue" aria-label="Descer para o conteúdo">
+    <span>Descobrir</span>
+    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6" /></svg>
+  </a>
 </section>
+<span id="depois-do-topo" class="phero__anchor"></span>
 
 <style>
-  .phero { position: relative; overflow: hidden; padding-block: clamp(64px, 9vw, 128px) clamp(56px, 8vw, 104px); }
-  .phero--blue { background: var(--tint-blue); }
-  .phero--pink { background: var(--tint-pink); }
-  .phero--gold { background: var(--tint-gold); }
-  .phero--deep { background: var(--blue-deep); color: var(--white); }
+  /* Quase o ecrã inteiro: tira o cabeçalho e a faixa do topo e deixa ~56px da secção seguinte à vista. */
+  .phero { --c1: var(--blue); --c2: var(--pink); --c3: var(--gold); position: relative; overflow: hidden; display: flex; align-items: center; min-height: calc(100svh - var(--header-h) - 42px - 56px); padding-block: clamp(48px, 6vw, 80px) clamp(88px, 9vw, 112px); }
+  .phero--blue { background: radial-gradient(circle at 82% 28%, #fff 0, transparent 42%), radial-gradient(circle at 8% 92%, var(--tint-pink) 0, transparent 40%), var(--tint-blue); }
+  .phero--pink { --c1: var(--pink); --c2: var(--gold); --c3: var(--blue); background: radial-gradient(circle at 82% 28%, #fff 0, transparent 42%), radial-gradient(circle at 8% 92%, var(--tint-gold) 0, transparent 40%), var(--tint-pink); }
+  .phero--gold { --c1: var(--gold); --c2: var(--pink); --c3: var(--blue); background: radial-gradient(circle at 82% 28%, #fff 0, transparent 42%), radial-gradient(circle at 8% 92%, var(--tint-pink) 0, transparent 40%), var(--tint-gold); }
+  .phero--deep { --c1: var(--blue); --c2: var(--pink); --c3: var(--gold); color: var(--white); background: radial-gradient(circle at 80% 30%, rgba(13, 141, 229, 0.55) 0, transparent 48%), radial-gradient(circle at 6% 96%, rgba(218, 79, 140, 0.28) 0, transparent 38%), var(--blue-deep); }
   .phero--deep h1 { color: var(--white); }
   .phero--deep .lede { color: rgba(255, 255, 255, 0.88); }
-  .phero__inner { position: relative; z-index: 1; }
-  .phero h1 { max-width: 16ch; }
-  .phero__drop { position: absolute; right: -4%; top: 12%; width: clamp(180px, 28vw, 380px); aspect-ratio: 1; border-radius: 50% 50% 0 50%; background: var(--blue); opacity: 0.9; }
-  .phero__circle { position: absolute; right: 22%; bottom: 8%; width: clamp(80px, 11vw, 150px); aspect-ratio: 1; border-radius: 50%; background: var(--pink); }
-  .phero--pink .phero__drop { background: var(--pink); }
-  .phero--pink .phero__circle { background: var(--gold); }
-  .phero--gold .phero__drop { background: var(--gold); }
-  .phero--deep .phero__drop { background: var(--blue); }
-  .phero--deep .phero__circle { background: var(--pink); }
-  @media (max-width: 760px) { .phero__drop { right: -22%; top: 4%; opacity: 0.35; } .phero__circle { right: 6%; bottom: 4%; width: 70px; opacity: 0.6; } }
+
+  .phero__grid { position: relative; z-index: 1; width: 100%; display: grid; gap: 40px; align-items: center; }
+  .phero h1 { max-width: 16ch; font-size: clamp(2.3rem, 1.2rem + 3.2vw, 4.1rem); }
+  .phero__label { display: inline-flex; align-items: center; gap: 10px; margin-bottom: 20px; padding: 0.45rem 1.1rem 0.45rem 0.8rem; border-radius: var(--r-pill); background: var(--white); color: var(--navy); font-family: var(--font-label); font-size: 0.9rem; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; box-shadow: 0 6px 18px rgba(11, 53, 86, 0.1); }
+  .phero__label::before { content: ''; width: 10px; height: 10px; border-radius: 0 50% 50% 50%; background: var(--c2); }
+
+  .phero__art { position: relative; aspect-ratio: 1; width: min(100%, 520px); justify-self: center; }
+  .phero__drop { position: absolute; left: 6%; top: 6%; width: 74%; aspect-ratio: 1; overflow: hidden; border-radius: 50% 50% 0 50%; background: var(--c1); box-shadow: 0 30px 60px rgba(11, 53, 86, 0.18); }
+  .phero__drop :global(picture), .phero__drop :global(img) { display: block; width: 100%; height: 100%; object-fit: cover; }
+  /* Ligeiro zoom: algumas fotografias têm uma margem branca na borda. */
+  .phero__drop :global(picture img) { transform: scale(1.08); }
+  .phero__drop--fairy { display: grid; place-items: center; background: var(--white); }
+  .phero__drop--fairy img { width: 58%; height: auto; object-fit: contain; }
+  .phero__ring { position: absolute; right: 0; bottom: 4%; width: 66%; aspect-ratio: 1; border-radius: 50%; border: 3px dashed color-mix(in srgb, var(--c1) 55%, transparent); }
+  .phero--deep .phero__ring { border-color: rgba(255, 255, 255, 0.35); }
+  .phero__circle { position: absolute; border-radius: 50%; }
+  .phero__circle--a { right: 2%; top: 2%; width: 24%; aspect-ratio: 1; background: var(--c2); }
+  .phero__circle--b { left: 0; bottom: 6%; width: 18%; aspect-ratio: 1; background: var(--c3); }
+
+  .phero__cue { position: absolute; left: 50%; bottom: 20px; z-index: 2; transform: translateX(-50%); display: inline-flex; flex-direction: column; align-items: center; gap: 2px; min-height: 44px; color: var(--navy); font-family: var(--font-label); font-size: 0.8rem; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; text-decoration: none; opacity: 0.8; }
+  .phero--deep .phero__cue { color: var(--white); }
+  .phero__cue:hover { opacity: 1; color: inherit; }
+  .phero__anchor { display: block; scroll-margin-top: var(--header-h); }
+
+  @media (min-width: 960px) { .phero__grid { grid-template-columns: 1.1fr 0.9fr; gap: 64px; } }
+  @media (max-width: 959px) { .phero__art { width: min(86%, 380px); } .phero__cue { display: none; } }
+  @media (prefers-reduced-motion: no-preference) { .phero__cue svg { animation: cue 1.8s ease-in-out infinite; } }
+  @keyframes cue { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(6px); } }
 </style>
