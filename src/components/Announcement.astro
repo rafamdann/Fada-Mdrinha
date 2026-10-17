@@ -1,36 +1,52 @@
 ---
 /**
- * Faixa decorativa no topo de todas as páginas: um pequeno céu nocturno, sem texto.
- * Brilhos espalhados à mão (posição, altura e tamanho diferentes) e alguns pontinhos ao fundo.
+ * Faixa decorativa no topo de todas as páginas: um pequeno céu nocturno, sem texto, com a altura da versão 1.
+ * Posições escolhidas à mão para não formarem padrão; cada brilho cintila ao seu ritmo (--dur) e com o seu atraso (--t).
  * Os marcados com `wide` só aparecem em ecrãs largos, para o telemóvel não ficar cheio.
  */
 import Star from './Star.astro';
 const stars = [
-  { x: 4, y: 30, s: 10, c: '#fff', t: 0.2 },
-  { x: 13, y: 68, s: 7, c: 'var(--gold)', t: 1.4, wide: true },
-  { x: 21, y: 22, s: 13, c: 'var(--gold)', t: 0.7 },
-  { x: 33, y: 62, s: 8, c: 'var(--pink)', t: 1.9, wide: true },
-  { x: 41, y: 26, s: 9, c: '#fff', t: 1.1 },
-  { x: 52, y: 70, s: 12, c: 'var(--blue)', t: 0.4, wide: true },
-  { x: 60, y: 20, s: 8, c: 'var(--pink)', t: 1.6 },
-  { x: 71, y: 58, s: 14, c: '#fff', t: 0.9, wide: true },
-  { x: 80, y: 28, s: 7, c: 'var(--gold)', t: 2.1 },
-  { x: 89, y: 64, s: 11, c: 'var(--pink)', t: 0.5, wide: true },
-  { x: 96, y: 24, s: 9, c: 'var(--blue)', t: 1.3 },
+  { x: 3, y: 38, s: 9, c: '#fff', dur: 4.6, t: -1.2 },
+  { x: 11, y: 70, s: 6, c: 'var(--gold)', dur: 3.1, t: -2.7, wide: true },
+  { x: 19, y: 30, s: 12, c: 'var(--gold)', dur: 5.8, t: -0.4 },
+  { x: 27, y: 46, s: 7, c: 'var(--pink)', dur: 3.7, t: -3.3, wide: true },
+  { x: 38, y: 74, s: 8, c: '#fff', dur: 6.4, t: -5.1 },
+  { x: 47, y: 24, s: 10, c: 'var(--blue)', dur: 4.2, t: -1.9, wide: true },
+  { x: 55, y: 60, s: 6, c: 'var(--pink)', dur: 2.9, t: -0.8 },
+  { x: 64, y: 36, s: 13, c: '#fff', dur: 5.2, t: -4.4, wide: true },
+  { x: 78, y: 72, s: 8, c: 'var(--gold)', dur: 3.4, t: -2.2 },
+  { x: 86, y: 28, s: 7, c: 'var(--pink)', dur: 6.1, t: -3.8, wide: true },
+  { x: 95, y: 56, s: 10, c: 'var(--blue)', dur: 4.9, t: -0.2 },
 ];
 const dots = [
-  { x: 8, y: 72 }, { x: 17, y: 40 }, { x: 27, y: 80 }, { x: 37, y: 30 }, { x: 46, y: 76 },
-  { x: 56, y: 42 }, { x: 66, y: 26 }, { x: 76, y: 82 }, { x: 85, y: 44 }, { x: 93, y: 78 },
+  { x: 6, y: 78, dur: 3.3, t: -1 }, { x: 15, y: 22, dur: 5.1, t: -3 }, { x: 23, y: 84, dur: 4.2, t: -2 },
+  { x: 32, y: 18, dur: 6.2, t: -4 }, { x: 43, y: 52, dur: 3.8, t: -0.5 }, { x: 51, y: 86, dur: 5.6, t: -2.6 },
+  { x: 59, y: 20, dur: 4.4, t: -3.7 }, { x: 70, y: 62, dur: 3.1, t: -1.8 }, { x: 74, y: 16, dur: 5.9, t: -4.9 },
+  { x: 82, y: 50, dur: 4.7, t: -0.9 }, { x: 91, y: 82, dur: 3.6, t: -2.4 }, { x: 98, y: 20, dur: 5.3, t: -3.1 },
 ];
 ---
 <div class="announce" aria-hidden="true">
-  {dots.map((d, i) => <span class:list={['announce__dot', { 'announce__wide': i % 2 === 1 }]} style={`left:${d.x}%;top:${d.y}%`}></span>)}
-  {stars.map((st) => <Star class={st.wide ? 'announce__wide' : undefined} style={`left:${st.x}%;top:${st.y}%;--s:${st.s}px;--t:${st.t}s;margin:calc(var(--s) / -2) 0 0 calc(var(--s) / -2)`} color={st.c} />)}
+  {dots.map((d, i) => <span class:list={['announce__dot', { 'announce__wide': i % 3 === 1 }]} style={`left:${d.x}%;top:${d.y}%;--dur:${d.dur}s;--t:${d.t}s`}></span>)}
+  {stars.map((st) => <Star class={st.wide ? 'announce__star announce__wide' : 'announce__star'} style={`left:${st.x}%;top:${st.y}%;--s:${st.s}px;--dur:${st.dur}s;--t:${st.t}s;margin:calc(var(--s) / -2) 0 0 calc(var(--s) / -2)`} color={st.c} />)}
 </div>
 
 <style>
-  .announce { position: relative; overflow: hidden; height: 46px; background: var(--navy); }
-  .announce__dot { position: absolute; width: 2px; height: 2px; border-radius: 50%; background: #fff; opacity: 0.45; }
+  .announce { position: relative; overflow: hidden; height: 42px; background: var(--navy); }
+  .announce__dot { position: absolute; width: 2px; height: 2px; border-radius: 50%; background: #fff; opacity: 0.4; }
   .announce :global(.announce__wide) { display: none; }
   @media (min-width: 760px) { .announce :global(.announce__wide) { display: block; } }
+  /* Cintilar irregular (não liga/desliga): sobe, desce um pouco, volta a brilhar, apaga devagar. */
+  @media (prefers-reduced-motion: no-preference) {
+    .announce :global(.announce__star) { animation: glimmer var(--dur) ease-in-out infinite; animation-delay: var(--t); }
+    .announce__dot { animation: dot var(--dur) ease-in-out infinite; animation-delay: var(--t); }
+  }
+  @keyframes glimmer {
+    0% { opacity: 0.3; transform: scale(0.7) rotate(0deg); }
+    18% { opacity: 1; transform: scale(1.05) rotate(20deg); }
+    32% { opacity: 0.55; transform: scale(0.85) rotate(30deg); }
+    47% { opacity: 0.95; transform: scale(1) rotate(38deg); }
+    72% { opacity: 0.45; transform: scale(0.8) rotate(45deg); }
+    100% { opacity: 0.3; transform: scale(0.7) rotate(45deg); }
+  }
+  @keyframes dot { 0%, 100% { opacity: 0.2; } 30% { opacity: 0.7; } 55% { opacity: 0.35; } 75% { opacity: 0.6; } }
 </style>

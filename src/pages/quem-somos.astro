@@ -2,6 +2,7 @@
 import { Picture } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
+import engomar from '../assets/photos/engomar.jpg';
 import Icon from '../components/Icon.astro';
 import Star from '../components/Star.astro';
 import Wave from '../components/Wave.astro';
@@ -10,7 +11,7 @@ import { team, values, principles, oath, compare } from '../data/content';
 import { withBase } from '../config/site';
 ---
 <Base title="Quem Somos" description="Conheça a história, a missão, os valores e a equipa da Fada Madrinha, limpeza profissional em Luanda com método, cuidado e confiança.">
-  <PageHero tone="pink" title="Duas amigas, uma crença, uma equipa que cuida" text="A Fada Madrinha nasce de Irina André e Nguelengue Savinona, duas amigas que sempre entenderam que um espaço limpo e arrumado não é um privilégio. É essencial." />
+  <PageHero label="Quem Somos" image={engomar} imageAlt="Colaboradora da Fada Madrinha a engomar roupa com um sorriso" imagePosition="50% 16%" tone="pink" title="Duas amigas, uma crença, uma equipa que cuida" text="A Fada Madrinha nasce de Irina André e Nguelengue Savinona, duas amigas que sempre entenderam que um espaço limpo e arrumado não é um privilégio. É essencial." />
 
   <section class="section" aria-labelledby="nome-title">
     <div class="wrap wrap--narrow center">

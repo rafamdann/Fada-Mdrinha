@@ -2,6 +2,7 @@
 import Base from '../layouts/Base.astro';
 import Icon from '../components/Icon.astro';
 import PageHero from '../components/PageHero.astro';
+import cozinha from '../assets/photos/cozinha.jpg';
 import Marquee from '../components/Marquee.astro';
 import Faq from '../components/Faq.astro';
 import ContactCta from '../components/ContactCta.astro';
@@ -9,7 +10,7 @@ import { waLink, whatsappMessages } from '../config/site';
 import { services, howItWorks, faq } from '../data/content';
 ---
 <Base title="Serviços" description="Limpeza residencial, empresarial, higienização especializada, organização de espaços, pós-obra e estofos em Luanda. Veja como trabalhamos em cada serviço.">
-  <PageHero tone="blue" title="Seis serviços, o mesmo cuidado" text="Cada serviço é adaptado ao seu espaço e à sua rotina. Diga-nos o que precisa e preparamos uma proposta personalizada, clara e sem letras pequenas." />
+  <PageHero label="Serviços" image={cozinha} imageAlt="Colaboradora da Fada Madrinha, de polo azul, a limpar a bancada de uma cozinha" imagePosition="38% 30%" tone="blue" title="Seis serviços, o mesmo cuidado" text="Cada serviço é adaptado ao seu espaço e à sua rotina. Diga-nos o que precisa e preparamos uma proposta personalizada, clara e sem letras pequenas." />
 
   <Marquee items={services.map((s) => s.title)} tone="azul" />
 

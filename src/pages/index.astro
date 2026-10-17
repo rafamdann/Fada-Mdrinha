@@ -59,8 +59,8 @@ const headline = ['Transformamos', 'espaços.', 'Criamos', 'bem-estar.'];
 
 <style>
   /* HERO */
-  .hero { position: relative; overflow: hidden; padding-block: clamp(40px, 6vw, 96px) clamp(64px, 8vw, 120px); background: radial-gradient(circle at 85% 30%, var(--tint-blue) 0, transparent 55%), radial-gradient(circle at 10% 90%, var(--tint-pink) 0, transparent 45%); }
-  .hero__grid { display: grid; gap: 48px; align-items: center; }
+  .hero { position: relative; overflow: hidden; display: flex; align-items: center; min-height: calc(100svh - var(--header-h) - 42px - 56px); padding-block: clamp(40px, 6vw, 96px) clamp(64px, 8vw, 120px); background: radial-gradient(circle at 85% 30%, var(--tint-blue) 0, transparent 55%), radial-gradient(circle at 10% 90%, var(--tint-pink) 0, transparent 45%); }
+  .hero__grid { width: 100%; display: grid; gap: 48px; align-items: center; }
   .hero__title { font-size: clamp(3rem, 1.6rem + 6vw, 6rem); line-height: 0.98; letter-spacing: -0.035em; margin-bottom: 24px; }
   .hero__word { display: inline-block; }
   .hero__lede { margin-bottom: 32px; }
